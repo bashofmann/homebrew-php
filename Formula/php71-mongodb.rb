@@ -14,15 +14,13 @@ class Php71Mongodb < AbstractPhp71Extension
     sha256 "30f4a71c580ca48e8cf3a8af0eb9f9f1953a425786a01db09608fea1b64875f5" => :el_capitan
   end
 
-  depends_on "openssl"
-
   def install
     Dir.chdir "mongodb-#{version}" unless build.head?
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
                           phpconfig,
-                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
+                          "--with-mongodb-ssl=darwin"
     system "make"
     prefix.install "modules/mongodb.so"
     write_config_file if build.with? "config-file"
